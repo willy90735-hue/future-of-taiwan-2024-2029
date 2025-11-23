@@ -101,11 +101,6 @@ def build_personal(income_2024_ntd, house_2024_ntd):
 # ======================================
 
 def line_chart(df, x_col, y_cols, title, unit=""):
-    """
-    用 Altair 畫中文折線圖：
-    - X 軸：年份（水平顯示）
-    - 顏色：鮮艷暖色系（橘 / 紅 / 黃 / 深橘）
-    """
     df2 = df.copy()
     df2[x_col] = df2[x_col].astype(str)
 
@@ -118,24 +113,32 @@ def line_chart(df, x_col, y_cols, title, unit=""):
             x=alt.X(
                 f"{x_col}:O",
                 title="年份",
-                axis=alt.Axis(labelAngle=0)  # X 軸年份水平
+                axis=alt.Axis(
+                    labelAngle=0,
+                    labelColor="black",
+                    titleColor="black"
+                )
             ),
             y=alt.Y(
                 "數值:Q",
-                title=f"數值（{unit}）" if unit else "數值"
+                title=f"數值（{unit}）" if unit else "數值",
+                axis=alt.Axis(
+                    labelColor="black",
+                    titleColor="black"
+                )
             ),
             color=alt.Color(
                 "指標:N",
                 title="情境 / 指標",
                 scale=alt.Scale(
                     range=[
-                        "#FF3B30",  # 紅色 - 中國
-                        "#009DFF",  # 藍色 - 自然
-                         
-                        "#FFC300",  # 黃色 - 房價所得比
-                        "#FF6F00"   # 深橘 - 其他
+                        "#FF3B30",
+                        "#009DFF",
+                        "#FFC300",
+                        "#FF6F00"
                     ]
-                )
+                ),
+                legend=alt.Legend(labelColor="black", titleColor="black")
             ),
             tooltip=[
                 alt.Tooltip(f"{x_col}:O", title="年份"),
@@ -144,14 +147,18 @@ def line_chart(df, x_col, y_cols, title, unit=""):
             ]
         )
         .properties(
-            title=title,
+            title=alt.TitleParams(
+                text=title,
+                color="black"
+            ),
             width=780,
             height=360,
-            background="#FFFFFF"  # 深色背景，暖色線條更亮
+            background="#FFFFFF"
         )
     )
 
     st.altair_chart(chart, use_container_width=True)
+
 
 
 # ======================================
@@ -261,14 +268,15 @@ line_chart(
 )
 
 st.markdown("**GDP / FDI 詳細數值（千萬美元）**")
-st.dataframe(
-    macro_df_round[[
-        "年份",
-        "自然_GDP_千萬美元", "中國模式_GDP_千萬美元",
-        "自然_FDI_千萬美元", "中國模式_FDI_千萬美元"
-    ]],
-    use_container_width=True
-)
+macro_df_show = macro_df_round[[
+    "年份",
+    "自然_GDP_千萬美元", "中國模式_GDP_千萬美元",
+    "自然_FDI_千萬美元", "中國模式_FDI_千萬美元"
+]].reset_index(drop=True)
+
+macro_df_show = macro_df_round[[ ... ]].reset_index(drop=True)
+st.dataframe(macro_df_show, use_container_width=True)
+
 
 
 # ======================================
