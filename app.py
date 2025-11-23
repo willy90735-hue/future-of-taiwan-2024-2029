@@ -97,7 +97,7 @@ def build_personal(income_2024_ntd, house_2024_ntd):
 
 
 # ======================================
-# 3. 通用中文折線圖（Altair）- 暖色系
+# 3. 折線圖
 # ======================================
 
 def line_chart(df, x_col, y_cols, title, unit=""):
@@ -274,7 +274,6 @@ macro_df_show = macro_df_round[[
     "自然_FDI_千萬美元", "中國模式_FDI_千萬美元"
 ]].reset_index(drop=True)
 
-macro_df_show = macro_df_round[[ ... ]].reset_index(drop=True)
 st.dataframe(macro_df_show, use_container_width=True)
 
 
